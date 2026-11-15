@@ -13,7 +13,7 @@ pinned; the formats are the overlay.
 ```
   public goat-transformers (engines, spec, public packs)   <- pinned by core.ref
                       +
-  this overlay (packs/, provenance)                         <- the private part
+  this overlay (model/, packs/, provenance)                 <- the private part
                       =
   assembled tree: the engines run the overlay's formats     <- ./assemble.sh
 ```
@@ -27,7 +27,8 @@ format is a commit here.
 | Path | Holds |
 |---|---|
 | `core.ref` | the `goat-transformers` commit this overlay builds with |
-| `packs/<format>/` | each format: `pack.def` dictionary, mappings, `vectors/` |
+| `model/<module>.def` | model modules for keys that exist only in the overlay's formats, marked `distribution controlled` |
+| `packs/<format>/` | each format: `pack.def` (marked `distribution controlled`, with its `source`), `vectors/` |
 | `PROVENANCE.md` | the rights basis and handling for the packs (a template here) |
 | `assemble.sh` | combines the pinned core and these packs into a working tree |
 
@@ -35,13 +36,21 @@ In a real overlay the repository is **private**, access is limited to the people
 allowed to hold the material, and `PROVENANCE.md` is filled in. This example is
 public because everything in it is fictional.
 
-## The example format
+## The example formats
 
-`packs/xtdl-example/` is an invented fixed-layout binary data link ("XTDL"). It
-uses the public `bits` wire (binary words, bit-range fields) and maps to the
-shared model, so `xtdl-example -> geojson` works once assembled. Its field layout
-is made up and encodes nothing real — it stands in for the controlled wire codecs
-a real overlay would hold.
+`packs/xtdl-example/` and `packs/xtdl-b-example/` are two invented fixed-layout
+binary formats, and `model/xtdl.def` is an invented model module with one key,
+`xtdl.sector`. All three are marked `distribution controlled` to show the
+mechanics; nothing in them is real.
+
+| Conversion | Carries | Why |
+|---|---|---|
+| `xtdl-example` to `geojson` | position | both map the public `core` keys |
+| `xtdl-example` to `xtdl-b-example` | position and `xtdl.sector` | both use the overlay's `xtdl` module |
+| any public format to `xtdl-example` | position | a public pack cannot use a controlled module |
+
+An engine started with `--max-distribution public` refuses the overlay's module
+and packs, so a deployment entitled only to public formats cannot load them.
 
 ## Try it
 
@@ -53,6 +62,9 @@ a real overlay would hold.
 
 # run the reference engine against the assembled packs (public + overlay):
 (cd /tmp/assembled/engines/rust && cargo test)
+
+# a public-only engine refuses the overlay (exits non-zero, `distribution-refused`):
+(cd /tmp/assembled/engines/rust && cargo run -q -- list-formats --packs ../../packs --max-distribution public)
 ```
 
 The assembled tree carries a `.goat-transformers-assembled` marker naming the

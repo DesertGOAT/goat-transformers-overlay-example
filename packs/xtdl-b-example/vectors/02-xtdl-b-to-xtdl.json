@@ -1,0 +1,7 @@
+{
+  "name": "xtdl-b-to-xtdl",
+  "from": "xtdl-b-example",
+  "to": "xtdl-example",
+  "input": "5384c8141c07",
+  "expect": "2244a6e03898"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "xtdl-b-roundtrip",
+  "from": "xtdl-b-example",
+  "to": "xtdl-b-example",
+  "input": "5384c8141c07",
+  "expect": "5384c8141c07"
+}

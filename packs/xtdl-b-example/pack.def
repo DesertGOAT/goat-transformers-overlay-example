@@ -1,0 +1,13 @@
+# A second FICTIONAL format, invented only for this example. It shares the
+# overlay's `xtdl` module with `xtdl-example`, so the two convert `xtdl.sector`
+# to each other; a public format receives only the `core` keys.
+format     xtdl-b-example
+version    0.1.0
+distribution controlled
+source     "invented for this example; no external document"
+wire       bits
+word_bytes 6
+uses       xtdl
+field  xtdl.sector  0:0:5     uint
+field  lat          0:5:21    linscale:1048575:90
+field  lon          0:26:22   linscale:2097151:180

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Assemble a working tree from the public core and this overlay.
 #
-#   public goat-transformers (at core.ref)  +  this overlay's packs/
+#   public goat-transformers (at core.ref)  +  this overlay's model/ and packs/
 #      = an assembled tree where the engines run the overlay's formats.
 #
 # The same shape a real private overlay uses: the engine code is public and
@@ -39,10 +39,22 @@ else
   rm -rf "$tmp"
 fi
 
-# Overlay the private packs on top of the public packs.
-echo "assemble: overlaying packs/"
-cp -R "$OVERLAY/packs/." "$OUT/packs/"
+# Overlay the private model modules and packs on top of the public ones. An
+# overlay file may not replace a core file: a module or pack name is used once.
+for d in model packs; do
+  [ -d "$OVERLAY/$d" ] || continue
+  for src in "$OVERLAY/$d"/*; do
+    name="$(basename "$src")"
+    if [ -e "$OUT/$d/$name" ]; then
+      echo "assemble: $d/$name exists in the core; an overlay may not replace it" >&2; exit 1
+    fi
+  done
+  echo "assemble: overlaying $d/"
+  cp -R "$OVERLAY/$d/." "$OUT/$d/"
+done
 echo "$ref" > "$OUT/.goat-transformers-assembled"
 echo "assemble: done -> $OUT"
 echo "  run the reference engine's vectors:"
 echo "    (cd $OUT/engines/rust && cargo test)"
+echo "  show that a public-only engine refuses the overlay:"
+echo "    (cd $OUT/engines/rust && cargo run -q -- list-formats --packs ../../packs --max-distribution public)"

@@ -1,0 +1,9 @@
+# FICTIONAL model module, invented only to show the overlay shape. It stands in
+# for the modules a real private overlay holds: keys that exist only in the
+# controlled formats, declared here and never in the public core.
+# It is marked `controlled` to show the mechanics; nothing in it is real.
+module        xtdl
+version       0.1.0
+distribution  controlled
+source        "invented for this example; no external document"
+key  sector    int  -  "fictional: which of 32 sectors the reporter is in"

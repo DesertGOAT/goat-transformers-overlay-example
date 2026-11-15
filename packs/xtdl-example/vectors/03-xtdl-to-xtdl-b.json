@@ -1,0 +1,10 @@
+{
+  "name": "xtdl-to-xtdl-b-carries-sector",
+  "from": "xtdl-example",
+  "to": "xtdl-b-example",
+  "input": "2244a6e03898",
+  "expect": "5384c8141c07",
+  "model": {
+    "xtdl.sector": "19"
+  }
+}
