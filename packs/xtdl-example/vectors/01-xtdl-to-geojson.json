@@ -1,0 +1,7 @@
+{
+  "name": "xtdl-to-geojson",
+  "from": "xtdl-example",
+  "to": "geojson",
+  "input": "2244a6e03800",
+  "expect": "{\"type\":\"Feature\",\"geometry\":{\"type\":\"Point\",\"coordinates\":[9.997992514606722,35.247092482655034]},\"properties\":{}}"
+}

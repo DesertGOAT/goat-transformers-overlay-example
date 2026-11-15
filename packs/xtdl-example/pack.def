@@ -1,0 +1,10 @@
+# Example Tactical Data Link (XTDL) — a FICTIONAL binary format invented only to
+# show the overlay shape. It is not a real standard and encodes nothing real.
+# One 6-byte word, LSB-first bit ranges, decoded through the public `bits` wire.
+format     xtdl-example
+version    0.1.0
+wire       bits
+word_bytes 6
+field  lat       0:0:21    linscale:1048575:90
+field  lon       0:21:22   linscale:2097151:180
+field  course    0:43:5    uint
